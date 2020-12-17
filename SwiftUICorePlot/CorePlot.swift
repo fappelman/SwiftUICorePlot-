@@ -10,7 +10,7 @@ import CorePlot
 
 public struct CorePlot: NSViewRepresentable {
     private let oneDay : Double = 24 * 60 * 60
-    var plotData: [Double]
+    @Binding var plotData: [Double]
 
     public func makeNSView(context: Context) -> CPTGraphHostingView {
         // self.plotData = newPlotData()

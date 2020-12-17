@@ -9,7 +9,7 @@ import SwiftUI
 
 
 struct ContentView: View {
-    func newPlotData() -> [Double]
+    static func newPlotData() -> [Double]
     {
         var newData = [Double]()
 
@@ -20,8 +20,20 @@ struct ContentView: View {
         return newData
     }
 
+    @State var data: [Double] = Self.newPlotData()
+    @State var uuid = UUID()
+
     var body: some View {
-        CorePlot(plotData: newPlotData())
+        VStack {
+            CorePlot(plotData: $data)
+                .focusable()
+            Button("recompute", action: {
+                data = Self.newPlotData()
+                uuid = UUID()
+            })
+        }
+        .id(uuid)
+
     }
 }
 
