@@ -72,24 +72,28 @@ public struct CorePlot: NSViewRepresentable {
     }
 
     public func makeCoordinator() -> Coordinator {
-        return Coordinator(parent: self)
+        return Coordinator(parent: self, data: plotData)
     }
 
     public func updateNSView(_ nsView: CPTGraphHostingView, context: Context) {
+        guard let graph = nsView.hostedGraph as? CPTXYGraph else { return }
+        context.coordinator.data = plotData
+        graph.reloadData()
     }
 
     public class Coordinator: NSObject, CPTPlotDataSource {
-
+        var data: [Double]
         let parent: CorePlot
 
-        init(parent: CorePlot) {
+        init(parent: CorePlot, data: [Double]) {
             self.parent = parent
+            self.data = data
         }
 
         // MARK: - Plot Data Source Methods
         
         public func numberOfRecords(for plot: CPTPlot) -> UInt {
-            UInt(parent.plotData.count)
+            return UInt(parent.plotData.count)
         }
 
         public func number(for plot: CPTPlot, field: UInt, record: UInt) -> Any?
@@ -99,7 +103,7 @@ public struct CorePlot: NSViewRepresentable {
                 return (parent.oneDay * Double(record)) as NSNumber
 
             case .Y:
-                return parent.plotData[Int(record)] as NSNumber
+                return data[Int(record)] as NSNumber
 
             @unknown default:
                 return nil
