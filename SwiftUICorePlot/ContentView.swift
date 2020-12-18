@@ -24,7 +24,18 @@ struct ContentView: View {
     var body: some View {
         VStack {
             CorePlot(plotData: $data)
+                .padding(left: 0)
+                .padding(right: 0)
                 .focusable()
+            CorePlot(plotData: $data)
+                .padding(left: 40)
+                .padding(right: 50)
+                .focusable()
+            CorePlot(plotData: $data)
+                .padding(bottom: 0)
+                .padding(top: 60)
+                .focusable()
+            Divider()
             Button("recompute", action: {
                 data = Self.newPlotData()
             })

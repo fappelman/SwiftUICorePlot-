@@ -12,6 +12,15 @@ public struct CorePlot: NSViewRepresentable {
     private let oneDay : Double = 24 * 60 * 60
     @Binding var plotData: [Double]
 
+    class Options {
+        var paddingLeft: CGFloat = 10
+        var paddingRight: CGFloat = 10
+        var paddingBottom: CGFloat = 10
+        var paddingTop: CGFloat = 10
+    }
+
+    @State var options = Options()
+
     public func makeNSView(context: Context) -> CPTGraphHostingView {
         // self.plotData = newPlotData()
 
@@ -22,6 +31,12 @@ public struct CorePlot: NSViewRepresentable {
 
         let theme = CPTTheme(named: .darkGradientTheme)
         newGraph.apply(theme)
+
+        // Padding
+        newGraph.paddingLeft = options.paddingLeft
+        newGraph.paddingBottom = options.paddingBottom
+        newGraph.paddingRight = options.paddingRight
+        newGraph.paddingTop = options.paddingTop
 
         // if let host = self.hostView {
         //     host.hostedGraph = newGraph
@@ -109,5 +124,27 @@ public struct CorePlot: NSViewRepresentable {
                 return nil
             }
         }
+    }
+}
+
+extension CorePlot {
+    func padding(left: CGFloat) -> CorePlot {
+        options.paddingLeft = left
+        return self
+    }
+
+    func padding(right: CGFloat) -> CorePlot {
+        self.options.paddingRight = right
+        return self
+    }
+
+    func padding(top: CGFloat) -> CorePlot {
+        self.options.paddingTop = top
+        return self
+    }
+
+    func padding(bottom: CGFloat) -> CorePlot {
+        self.options.paddingBottom = bottom
+        return self
     }
 }
